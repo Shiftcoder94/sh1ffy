@@ -1,0 +1,154 @@
+{
+  "name": "sh1ffy",
+  "displayName": "Sh1ffy Theme Manager",
+  "description": "Custom workbench font, local color themes, and sharable theme packs for VS Code.",
+  "version": "1.0.1",
+  "publisher": "ShiftCoder",
+  "icon": "assets/sh1ffy.png",
+  "repository": "https://github.com/Shiftcoder94/sh1ffy",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Themes",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "extensionKind": [
+    "ui"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "sh1ffy.workbenchFontActions",
+        "title": "[ Sh1ffy ] → Workbench Font Actions"
+      },
+      {
+        "command": "sh1ffy.colorThemeActions",
+        "title": "[ Sh1ffy ] → Color Theme Actions"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Sh1ffy Configuration",
+      "properties": {
+        "sh1ffy.workbenchFont": {
+          "type": "string",
+          "description": "Complete name of the font family, as defined in your system ( must be locally installed ).",
+          "examples": [
+            "Cascadia Code",
+            "JetBrains Mono"
+          ]
+        }
+      }
+    },
+    "themes": []
+  },
+  "scripts": {
+    "compile": "node ./bundle.mjs",
+    "vscode:prepublish": "npm run compile",
+    "watch": "esbuild --bundle --platform=node --format=cjs --target=node16 --external:vscode --outfile=out/extension.js src/extension.ts"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.7",
+    "@types/glob": "^8.0.0",
+    "@types/jsdom": "^20.0.1",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
+    "esbuild": "^0.27.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.3"
+  },
+  "dependencies": {
+    "@biomejs/biome": "^2.3.8",
+    "adm-zip": "^0.5.10"
+  },
+  "keywords": [
+    "sh1ffy",
+    "shiffy",
+    "sh1ffy toolkit",
+    "sh1ffy themes",
+    "sh1ffy fonts",
+    "font manager",
+    "font loader",
+    "font switcher",
+    "font tweaker",
+    "font toolkit",
+    "font presets",
+    "font pack",
+    "font customizer",
+    "ui font",
+    "ui fonts",
+    "workbench font",
+    "workbench fonts",
+    "ui font manager",
+    "ui font loader",
+    "ui font switcher",
+    "theme manager",
+    "theme loader",
+    "theme switcher",
+    "theme toolkit",
+    "theme pack",
+    "theme presets",
+    "theme tweaker",
+    "theme helper",
+    "theme builder",
+    "theme tester",
+    "custom theme",
+    "custom themes",
+    "local theme",
+    "local themes",
+    "private theme",
+    "private themes",
+    "json theme",
+    "jsonc theme",
+    "dynamic themes",
+    "personal themes",
+    "offline themes",
+    "themer",
+    "themist",
+    "theme kit",
+    "theme lab",
+    "theme forge",
+    "theme studio",
+    "vscode theming",
+    "vscode themes",
+    "vscode fonts",
+    "vscode styling",
+    "vscode toolkit",
+    "vscode tweaks",
+    "custom css",
+    "custom css js",
+    "custom css loader",
+    "custom css themes",
+    "material theme",
+    "dracula theme",
+    "one dark pro",
+    "night owl",
+    "monokai pro",
+    "ayu theme",
+    "palenight theme",
+    "tokyo night",
+    "cobalt theme",
+    "shades purple",
+    "synthwave 84",
+    "github theme",
+    "nord theme",
+    "solarized theme",
+    "fonted",
+    "fontify",
+    "themify",
+    "themified",
+    "fontly",
+    "customization"
+  ]
+}
