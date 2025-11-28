@@ -2,7 +2,7 @@
   "name": "sh1ffy",
   "displayName": "Sh1ffy Theme Manager",
   "description": "Custom workbench font, local color themes, and sharable theme packs for VS Code.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "publisher": "ShiftCoder",
   "icon": "assets/sh1ffy.png",
   "repository": "https://github.com/Shiftcoder94/sh1ffy",
