@@ -1,158 +1,99 @@
-# Sh1ffy – Workbench Font & Theme Toolkit for VS Code
+# Sh1ffy – Workbench Font & Private Theme Loader for VS Code
 
-Sh1ffy is a VS Code extension that lets you:
+Sh1ffy is a lightweight VS Code extension that lets you:
 
-- Use a custom font for the **workbench UI** (title bar, side bar, settings, extensions view, etc.).
-- Import your own **color themes** directly from JSON / JSONC files, without publishing them anywhere.
-- Manage Sh1ffy themes and fonts via simple menu commands.
+- Use a **custom font** for the **workbench UI** (tabs, side bar, panels, settings, etc.).
+- Import your own **private color themes** from local JSON / JSONC files, without publishing them anywhere.
 
-It is designed to be lightweight, explicit, and fully under your control.
+> **Important:** Sh1ffy **does not change the editor text font** used for code.  
+> Your editor font is still configured via the standard VS Code setting: `editor.fontFamily`.
 
 ![Sh1ffy UI screenshot](./assets/screenshot.png)
 
 ---
 
-## Important Notes
+## 1. Workbench Font – How to Use
 
-- **Sh1ffy does not change the editor text font.**  
-  Your editor font (code font) remains controlled by VS Code’s normal setting:
-  - `Editor: Font Family` → `editor.fontFamily`
+1. Open the **Command Palette**:  
+   `Ctrl + Shift + P` (Windows/Linux) or `Cmd + Shift + P` (macOS).
+2. Run: **`[ Sh1ffy ] → Workbench Font Actions`**.
+3. Choose **“Set WorkBench Font”** and enter a font family that is **installed on your machine**, for example:
+   - `JetBrains Mono`
+   - `Cascadia Code`
+   - `Fira Code`
+   - `Inter`
+4. Then choose **“Enable WorkBench Font”** and confirm **Reload Window** when prompted.
 
-- **Sh1ffy only affects the workbench UI font** via:
-  - `sh1ffy.workbenchFont` (global setting), and
-  - A small CSS snippet injected into VS Code’s `workbench.html`.
+From now on, the **VS Code UI (workbench)** will use your custom font, but the **code editor** will still use whatever you set in `editor.fontFamily`.
 
-- **Sh1ffy does not upload or publish your themes.**  
-  It simply:
-  - Reads your local `.json` / `.jsonc` theme files,
-  - Writes cleaned `.json` files into the extension’s `themes/` folder,
-  - Updates `package.json` so VS Code treats them as first-class color themes.
+> The font name must match a font that is **installed locally** on your computer. If the font isn’t installed, VS Code will fall back to defaults.
 
-You can keep fully private themes on your machine without pushing them to marketplaces or sites like [themes.vscode.one](https://themes.vscode.one/).
+### Before Uninstalling Sh1ffy
 
----
+Before you uninstall the extension:
 
-## Features Overview
-
-### 1. Workbench Font Manager
-
-Command: **`[ Sh1ffy ] → Workbench Font Actions`**
-
-Actions:
-
-- **Set WorkBench Font**  
-  Prompt for a font family name (e.g. `JetBrains Mono`, `Cascadia Code`) and store it in:
-  - `sh1ffy.workbenchFont`
-
-- **Enable WorkBench Font**  
-  Injects a `<style id="sh1ffy-tweaks">…</style>` block into `workbench.html` so the workbench UI uses your configured font.  
-  Prompts to **Reload Window**.
-
-- **Disable WorkBench Font**  
-  Removes Sh1ffy’s style block from `workbench.html`.  
-  Prompts to **Reload Window**.
-
-- **Reload Font Configuration**  
-  Rebuilds the Sh1ffy style block from the current `sh1ffy.workbenchFont` and writes it to `workbench.html`, then prompts to **Reload Window**.
-
-- **Reset to Defaults**  
-  Clears `sh1ffy.workbenchFont` and removes the Sh1ffy `<style>` block from `workbench.html`, restoring the default UI font (after reload).
-
-> Sh1ffy **never** writes to the editor font setting. Use the normal VS Code Settings UI for `editor.fontFamily`.
+1. Open the Command Palette.
+2. Run **`[ Sh1ffy ] → Workbench Font Actions`**.
+3. Select **“Disable WorkBench Font”**.  
+   This removes Sh1ffy’s custom UI font tweaks and avoids leftover styling.
 
 ---
 
-### 2. Dynamic Theme Manager
+## 2. Importing Your Own Color Themes
 
-Command: **`[ Sh1ffy ] → Color Theme Actions`**
+You can load your own themes directly from `.json` or `.jsonc` files on your computer.
 
-Actions:
+1. Open the **Command Palette**.
+2. Run: **`[ Sh1ffy ] → Color Theme Actions`**.
+3. Choose **“Import Theme(s)”**.
+4. Select one or more **JSON / JSONC theme files**.
+5. After import:
+   - The themes will appear in the **Color Theme** picker.
+   - Their names will start with `sh1ffy •`, for easy recognition.
+6. Open the Color Theme picker:
+   - Command Palette → **“Preferences: Color Theme”**  
+   - or via Settings UI.
+7. **Select your imported theme** (e.g. `sh1ffy • My Custom Theme`) from the list.
 
-- **Import Theme(s)**  
-  - Accepts one or more `.json` or `.jsonc` theme files.
-  - Strips comments from `.jsonc`, validates as JSON, and normalizes:
-    - Ensures a `name` field exists.
-    - Prefixes the name with `sh1ffy • `, so you see it clearly in the Color Theme picker.
-  - Writes `.json` theme files into the extension’s `themes/` folder:
-    - `.json` → copied as-is (after normalization).
-    - `.jsonc` → stored as `.json` with the same basename.
-  - Updates `package.json` → `contributes.themes`:
-    - Adds/updates Sh1ffy-managed theme entries.
-    - Tags them internally with `_sh1ffyTag: "sh1ffy-managed"` so they can be safely replaced.
-  - If a theme with the same Sh1ffy label already exists, you’ll be asked to **Overwrite** or **Skip**.
-  - For a single import, you’ll be offered:
-    - **Apply now** → set that theme as `workbench.colorTheme` and then reload.
-    - **Reload Window** → reload so the theme becomes selectable.
-
-- **Remove Theme(s)**  
-  - Lists imported Sh1ffy themes (label, id, type, relative path).
-  - Lets you select and delete themes from the `themes/` folder.
-  - Regenerates `contributes.themes` accordingly.
-  - Prompts to **Reload Window** to refresh the Color Theme list.
-
-- **List Themes**  
-  - Read-only QuickPick of Sh1ffy themes, showing:
-    - Label (with `sh1ffy •` prefix),
-    - Type: `Dark`, `Light`, or `High Contrast`,
-    - Internal id (`sh1ffy.some-theme`),
-    - Relative path under `themes/`.
-
-- **Repair Theme Contributions**  
-  - Re-scans the `themes/` folder.
-  - Regenerates only Sh1ffy-managed entries in `package.json`:
-    - Removes stale `_sh1ffyTag: "sh1ffy-managed"` entries.
-    - Recreates them from the current disk state.
-  - Prompts to **Reload Window**.
-
-- **Restore package.json Backup**  
-  - When Sh1ffy first modifies `package.json`, it creates a one-time backup:
-    - `package.json.sh1ffy.bak`
-  - This action restores that backup and prompts to **Reload Window**.
-
-> Sh1ffy’s theme manager is meant for personal, local workflows:
-> - Import and experiment with themes instantly.
-> - No publishing, no uploads, no external services.
+That’s it – your private theme is now usable without being published to any marketplace or website.
 
 ---
 
-## How to Use
+## 3. Repairing If Something Goes Wrong
 
-1. **Install Sh1ffy** from the VS Code marketplace (or load it from your local `.vsix`).
-2. Open the **Command Palette** (`Ctrl+Shift+P` / `Cmd+Shift+P`).
-3. Run one of the Sh1ffy entry commands:
-   - `[ Sh1ffy ] → Workbench Font Actions`
-   - `[ Sh1ffy ] → Color Theme Actions`
+If you ever feel that themes or fonts are out of sync, or something looks off:
 
-From there, follow the on-screen QuickPick menus and dialogs.
+1. Open the **Command Palette**.
+2. Run: **`[ Sh1ffy ] → Color Theme Actions`**.
+3. Choose **“Repair Theme Contributions”**.  
+   This will rescan imported themes and try to fix Sh1ffy’s changes.
+4. When prompted, click **“Reload Window”** to apply the repair.
 
----
-
-## Known Limitations & Safety
-
-- **Editing `workbench.html` and `package.json`** is powerful but low-level:
-  - Sh1ffy keeps changes scoped and reversible.
-  - The font manager has a **Reset to Defaults** option.
-  - The theme manager can **Repair Theme Contributions** and **Restore package.json Backup**.
-
-- **Read-only / sandboxed installations**:  
-  If VS Code is installed in a location where the extension cannot modify `workbench.html` or `package.json`, some actions may fail. In that case, Sh1ffy will:
-  - Show errors in notifications.
-  - Log details to the extension host log.
-
-- **Editor themes vs. workbench fonts**:  
-  Color themes apply to the entire editor UI, but the **code editor font** remains managed by `editor.fontFamily`. Sh1ffy intentionally does not override that setting.
+You can also use **“Restore package.json Backup”** from the same menu if you want to revert Sh1ffy’s theme-related changes back to their original state.
 
 ---
 
-## Why Sh1ffy?
+## 4. VS Code Warnings & Prompts
 
-- You want a **custom workbench font** without editing internal files by hand.
-- You maintain your own **private themes** as JSON/JSONC files and:
-  - Don’t want to publish them.
-  - Don’t want to depend on external generators or upload tools.
-- You prefer explicit, menu-driven control over:
-  - When fonts are applied.
-  - Which themes are available.
-  - How contributions are repaired or reset.
+Because Sh1ffy tweaks parts of VS Code’s UI, you may occasionally see:
 
-Sh1ffy aims to be a small, focused toolkit that gives you tight control over workbench fonts and themes, without taking over your entire VS Code configuration.
+- **“Your Code installation appears to be corrupt”**  
+  - This is expected after Sh1ffy changes some UI assets.  
+  - You can safely **ignore this warning** or set it to **“Never show again”**.
+
+- **“Extensions have been modified on disk, please reload”**  
+  - Click **“Reload”** when you see this.  
+  - This is how VS Code asks to apply the latest Sh1ffy changes.
+
+These prompts are normal when modifying the UI and are not a sign of malicious behavior.
+
+---
+
+## 5. Summary
+
+- Sh1ffy gives you a **custom workbench UI font** and **private theme loader** for VS Code.
+- It **does not** change the editor text font; use `editor.fontFamily` for that.
+- Imported themes are **local and private**, appear under **Color Themes** with a `sh1ffy •` prefix, and must be **chosen manually** from the Color Theme picker after import.
+- You can **repair** or **restore** if anything looks wrong, and you should **disable the custom font before uninstalling** the extension.
+
+Enjoy personalizing your VS Code look and feel without publishing anything publicly.
